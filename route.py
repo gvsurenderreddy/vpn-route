@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import urllib2
 import re
 import math
@@ -42,11 +43,13 @@ fi
 OLDGW=`cat /tmp/pptp_oldgw`
 """
     for ip in ips:
-        up_script += ip + '\n'
-        down_script += ip + '\n'
+        up_script += 'route add ' + ip + ' "${OLDGW}"\n'
+        down_script += 'route delete ' + ip + ' ${OLDGW}\n'
 
     open('/etc/ppp/ip-up', 'w').write(up_script)
-    open('/etc/ppp/ip-down', 'w').write(down_script)
+    open('/etc/ppp/ip-down', 'w').write(down_script + '\n\nrm /tmp/pptp_oldgw\n')
+    os.chmod('/etc/ppp/ip-up', 00755)
+    os.chmod('/etc/ppp/ip-down', 00755)
 
     print('ok')
 
@@ -54,5 +57,7 @@ OLDGW=`cat /tmp/pptp_oldgw`
 def main():
     put_ip(get_ip())
 
+
 if __name__ == '__main__':
+    print('Generate routing rules for VPN users in China.');
     main()
