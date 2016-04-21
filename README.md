@@ -11,6 +11,7 @@
 * 使用此法之后，可能导致Google Music等服务无法访问，因为连上VPN之后，使用的DNS也是国外的，因此google.cn解析出的是国外的IP。
 * 本程序只支持Mac 
 
+### 使用方法
 ```
   sudo python route.py
 ```
